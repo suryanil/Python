@@ -1,0 +1,65 @@
+###assignment 1
+
+
+emp_info = {}
+while True:
+    print("1. Create the employee information")
+    print("2. Update the employee details")
+    print("3. Delete Employee")
+    print("4. Display")
+    print("5. Exit")
+    ch = int(input("Enter your choice[1-4]:"))
+    if ch==1:
+        name = input("Enter the name:")
+        emp_id = int(input("Enter employee id:"))
+        ph=input("Enter the phone number:")
+        tech = input("Technologies [comma seprated e.g: C++, python, java]")
+        emp_info[emp_id] = {"name":name, "phone":ph, "tech": tech.split(",")}
+    elif ch==2:
+        emp_id = int(input("Whose details you want to update?. Please enter emp_id:"))
+        if emp_id not in emp_info:
+            print("Emp details not found") 
+        else:
+            rec = emp_info[emp_id]
+            for key, value in rec.items():
+                new = input("{}({})".format(key, value))
+                emp_info[emp_id][key] = value 
+                if new == '' :
+                    emp_info[emp_id][key] = value 
+                else:
+                    emp_info[emp_id][key] = new 
+            
+    elif ch==3:
+        
+        # take input from user as emp_id to be deleted
+        # check emp_id present in dict or not
+        # perform deletion using del method or pop
+        emp_id = int(input("Enter the emp id"))
+        if emp_id in emp_info:
+            del emp_info[emp_id]
+        else:
+            print("Emp record not found....")
+    elif ch ==4:
+        print(emp_info)
+    else:
+        break
+		
+		
+###assignment 2
+
+string="ab@k%op"
+list_string=list(string)
+i=0
+j=len(string)-1
+while i<j:
+    if not list_string[i].isalpha():
+        i+=1
+    elif not list_string[j].isalpha():
+        j-=1
+    else:
+        list_string[i], list_string[j]=list_string[j], list_string[i]
+        i+=1
+        j-=1
+
+str_out=''.join(list_string)
+print(str_out)	
