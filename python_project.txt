@@ -1,0 +1,181 @@
+############################################################################################
+##                  ATM System                                                            ##
+##    Developed By :  Suryanil palit                                                      ##
+##            Date :  20-DEC-2021                                                         ##
+##       Usage: The program can be started by executing the welcome() function                                             ##
+############################################################################################
+
+
+
+
+
+name=[]
+with open("name.txt","r") as a:
+    for line in a:
+        name.append(line.strip())
+card=[]
+with open("card.txt","r") as b:
+    for line in b:
+        card.append(line.strip())
+pin=[]
+with open("pin.txt","r") as c:
+    for line in c:
+        pin.append(line.strip())
+balance=[]
+with open("balance.txt","r") as d:
+    for line in d:
+        balance.append(line.strip())
+phone=[]
+with open("phone.txt","r") as e:
+    for line in e:
+        phone.append(line.strip())
+otp=[]
+with open("otp.txt","r") as f:
+    for line in f:
+        otp.append(line.strip())
+access=[]
+with open("access1.txt","r") as g:
+    for line in g:
+        access.append(line.strip())		
+
+def welcome():
+    print("Welcome to ABC Bank")
+    print("Please Insert your Card")
+   
+    card_number = input("Please enter your Card number")
+    print("You have entered your card number as  ",card_number)
+    i=card.index(card_number)
+    print(i)
+    if access[i] == "active":
+                    pin_number=input("Enter your PIN")
+                    pin_validation(card_number,pin_number)
+                    
+    else:
+        print("Invalid card number or your card is blocked")
+        
+def pin_validation(card_number,pin_number):
+    i=card.index(card_number)
+    if pin[i] == pin_number:
+        print("pin verification success")
+        men_menu(card_number)
+    else:
+        print("you have entered wrong pin")
+        
+
+def men_menu(card_number):
+    print("Please select any of the below option 1-6")
+    print("1. Check Account Blance")
+    print("2. Withdraw Cash")
+    print("3. Deposit Cash")
+    print("4. Pin Change")
+    print("5. Card Block")
+    print("6. Exit")
+    opt=int(input("Enter your options(1-6) here ")) 
+    if opt ==  1:
+        check_account_balance(card_number)
+    if opt == 2:
+        withdraw_cash(card_number)
+    if opt == 3:
+        deposit_cash(card_number)
+    if opt == 4:
+        pin_change(card_number)
+    if opt == 5:
+        card_block(card_number)
+    else:
+        exit()
+def check_account_balance(card_number):
+    i=card.index(card_number)
+    acct_balance=balance[i]
+    print("your available balance is  ",acct_balance)
+    cont=input("Please press Y to continue and N to exit")
+    if cont == 'Y':
+        men_menu(card_number)
+    else:
+        exit()
+def withdraw_cash(card_number): 
+    i=card.index(card_number)
+    acct_balance=balance[i]
+    withdrawl=int(input("Enter the amount to withdrawal in terms of 200 RS"))
+    if (withdrawl%200) == 0:
+        if int(acct_balance) >= withdrawl:
+            balance[i]=int(acct_balance)-withdrawl
+            print(f"{withdrawl} deducted from your account balance")
+            check_account_balance(card_number)
+            file_write()
+        else:
+            print("You dont have suffiecent balance in your account")
+            check_account_balance(card_number)
+    else:
+        print("Not valid withdrawl amount")
+        exit()
+def deposit_cash(card_number):
+    i=card.index(card_number)
+    acct_balance=balance[i]
+    deposit=int(input("please enter the amount you want to deposit"))
+    balance[i]=int(acct_balance)+deposit
+    print(f"{deposit} deposited to your account")
+    check_account_balance(card_number)
+    file_write()
+def pin_change(card_number):
+    i=card.index(card_number)
+    ph=input("please your mobile phone number ")
+    if phone[i] == ph:
+            otp_num=input("please provide the OTP sent to your mobile ")
+            if otp[i] == otp_num:
+                        print("OTP is verfied")
+                        new_pin=input("please provide the new pin you want to sent ")
+                        confirm_pin=input("please type your new pin to confirm ")
+                        if new_pin == confirm_pin:
+                                        pin[i]=new_pin
+                                        print("your pint reset is successfull")
+                                        file_write()
+                                        cont=input("Please press Y to continue and N to exit")
+                                        if cont == 'Y':
+                                            men_menu(card_number)
+                                        else:
+                                             exit()
+                        else:
+                                        print("PIN is not matching")
+            else:
+                 print("Invalid OTP") 
+    else:
+        print("your phone number is not correct ")
+def card_block(card_number):
+    i=card.index(card_number)
+    ph=input("please your mobile phone number ")
+    if phone[i] == ph:
+            otp_num=input("please provide the OTP sent to your mobile ")
+            if otp[i] == otp_num:
+                        print("OTP is verfied")
+                        access[i]='blocked'
+                        print("Your card was blocked successfully")
+                        file_write()
+            else:
+                 print("Invalid OTP")
+    else:
+        print("your phone number is not correct ")   
+
+        
+def file_write():
+    with open('balance.txt', 'w') as f:
+        for line in balance:
+            f.write("%s\n" % line) 
+    with open('name.txt', 'w') as f:
+        for line in name:
+            f.write("%s\n" % line)
+    with open('card.txt', 'w') as f:
+        for line in card:
+            f.write("%s\n" % line)
+    with open('pin.txt', 'w') as f:
+        for line in pin:
+            f.write("%s\n" % line)
+    with open('phone.txt', 'w') as f:
+        for line in phone:
+            f.write("%s\n" % line)
+    with open('otp.txt', 'w') as f:
+        for line in otp:
+            f.write("%s\n" % line) 
+    with open('access1.txt', 'w') as f:
+        for line in access:
+            f.write("%s\n" % line)    
+    
